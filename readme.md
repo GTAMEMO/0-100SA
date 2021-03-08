@@ -1,10 +1,10 @@
 ## Zerohyaku (0-100km/h) for GTASA
 
-This is a Cleo script for GTASA for acceleration testing of vehicles.
+This is a simple Cleo script for GTASA for acceleration testing of vehicles.
 
 ## Download
 
-[Download Zip](./archive/master.zip)
+[Download Zip](https://github.com/GTAMEMO/Zerohyaku-SA/archive/master.zip)
 
 
 ## Usage
