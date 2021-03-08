@@ -1,0 +1,97 @@
+{$CLEO .cs}
+
+//script_name "ZEROHYAKU"
+jump @ZRHK_1
+
+
+
+:ZRHK_1 //Waiting for "M"
+wait 0
+
+if and
+    Actor.Driving($PLAYER_ACTOR)
+    not Actor.Dead($PLAYER_ACTOR)
+    0AB0: key_pressed 77
+jf @ZRHK_1
+
+//Get Speed
+0@ = Actor.CurrentCar($PLAYER_ACTOR)
+02E3: 1@ = car 0@ speed
+1@ *= 3.7
+if
+    1@ == 0
+jf @ZRHK_1
+
+jump @ZRHK_3
+
+
+
+:ZRHK_3 //Waiting for Axel Input
+wait 0
+
+if and
+    Actor.Driving($PLAYER_ACTOR)
+    not Actor.Dead($PLAYER_ACTOR)
+jf @ZRHK_1
+0ACD: show_text_highpriority "0-100 Ready" time 0
+
+//Get Speed
+0@ = Actor.CurrentCar($PLAYER_ACTOR)
+02E3: 1@ = car 0@ speed
+1@ *= 3.7
+if
+    1@ > 0
+jf @ZRHK_3
+jump @ZRHK_5
+
+
+
+:ZRHK_5 //Starting
+wait 0
+33@ = 0
+03E5: show_text_box "ZHSTART" time 2000
+jump @ZRHK_7
+
+
+
+:ZRHK_7 //Counting
+wait 0
+if and
+    Actor.Driving($PLAYER_ACTOR)
+    not Actor.Dead($PLAYER_ACTOR)
+jf @ZRHK_11
+
+0@ = Actor.CurrentCar($PLAYER_ACTOR)
+02E3: 1@ = car 0@ speed
+1@ *= 3.7
+0092: 2@ = float_to_int 1@
+
+//Display Speed and Time  
+03F0: enable_text_draw 1
+045A: draw_text_1number 20.0 290.0 GXT 'NUMBER' number 2@       //Speed (km/h)
+045A: draw_text_1number 20.0 300.0 GXT 'NUMBER' number 33@      //Time  (millisecond)
+
+if
+    1@ > 100.0      //Speed Check
+jf @ZRHK_7
+jump @ZRHK_9
+
+
+
+:ZRHK_9 //Result
+wait 0
+ 
+0093: 4@ = int_to_float 33@
+4@ /= 1000.0
+0AED: 5@v = float 4@ to_string_format "%.3f"
+03E5: show_text_box "ZHSTOP" time 2000
+0ACD: show_text_highpriority 5@v time 5000      //Display Result
+jump @ZRHK_1
+
+
+
+:ZRHK_11 //Error
+wait 0
+ 
+03E5: show_text_box "ZHERROR" time 2000
+jump @ZRHK_1
